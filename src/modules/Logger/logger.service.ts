@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as winston from 'winston';
+import { LogEntry } from './types/log.entry.type';
 
 @Injectable()
 export class LoggerService {
@@ -16,49 +17,31 @@ export class LoggerService {
     });
   }
 
-  private logWithLevel(
-    level: string,
-    messageObject: { message: string; context?: string; timestamp?: string },
-  ) {
+  private logWithLevel(level: string, logEntry: LogEntry) {
     this.logger.log({
       level,
-      message: messageObject.message,
-      context: messageObject.context,
-      timestamp: messageObject.timestamp,
+      message: logEntry.message,
+      context: logEntry.context,
+      timestamp: logEntry.timestamp,
     });
   }
 
-  log(messageObject: {
-    message: string;
-    context?: string;
-    timestamp?: string;
-  }) {
-    this.logWithLevel('info', messageObject);
+  log(logEntry: LogEntry) {
+    this.logWithLevel('info', logEntry);
   }
 
-  error(
-    messageObject: { message: string; context?: string; timestamp?: string },
-    trace?: string,
-  ) {
-    this.logWithLevel('error', messageObject);
+  error(logEntry: LogEntry, trace?: string) {
+    this.logWithLevel('error', logEntry);
     if (trace) {
       this.logger.error(trace);
     }
   }
 
-  warn(messageObject: {
-    message: string;
-    context?: string;
-    timestamp?: string;
-  }) {
-    this.logWithLevel('warn', messageObject);
+  warn(logEntry: LogEntry) {
+    this.logWithLevel('warn', logEntry);
   }
 
-  debug(messageObject: {
-    message: string;
-    context?: string;
-    timestamp?: string;
-  }) {
-    this.logWithLevel('debug', messageObject);
+  debug(logEntry: LogEntry) {
+    this.logWithLevel('debug', logEntry);
   }
 }
