@@ -6,7 +6,7 @@ export class AppService {
   constructor(private readonly logger: LoggerService) {}
 
   getHello(): string {
-    this.logger.log('Obtendo exemplo...');
+    this.logger.log({ message: 'Obtendo exemplo...' });
     return 'Hello World!';
   }
 }
