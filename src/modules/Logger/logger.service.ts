@@ -13,7 +13,11 @@ export class LoggerService {
         winston.format.timestamp(),
         winston.format.json(),
       ),
-      transports: [new winston.transports.Console()],
+      transports: [
+        new winston.transports.Console({
+          format: winston.format.prettyPrint(),
+        }),
+      ],
     });
   }
 
@@ -43,5 +47,12 @@ export class LoggerService {
 
   debug(logEntry: LogEntry) {
     this.logWithLevel('debug', logEntry);
+  }
+
+  logWithMetadata(metadata: any) {
+    this.logger.info({
+      action: 'Function called with metadata',
+      metadata,
+    });
   }
 }
