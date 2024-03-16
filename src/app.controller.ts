@@ -7,6 +7,10 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return this.appService.getHello();
+    const response = this.appService.getHello();
+    this.appService.callExternalAPI();
+    this.appService.processRequest('teste');
+    // this.appService.throwError();
+    return response;
   }
 }
