@@ -1,50 +1,73 @@
 import { Injectable } from '@nestjs/common';
-import { LocalStorageLoggerService } from './local.storage.logger.context.service';
+import { LocalStorageService } from './local.storage.service';
 import { ContextNamespace } from './enums/context-namespaces';
 import { LoggerConfigs } from './config/logger-configs';
 
 @Injectable()
 export class LoggerContextService {
-  constructor(
-    private readonly localStorageLoggerService: LocalStorageLoggerService,
-  ) {}
+  constructor(private readonly localStorageService: LocalStorageService) {}
 
+  /**
+   * Sets the correlation ID in the logger context.
+   * @param correlationId The correlation ID to set.
+   */
   public setCorrelationId(correlationId: string): void {
-    this.localStorageLoggerService.setLoggerContextValue(
+    this.localStorageService.setContextValue(
       'correlationId',
       correlationId,
       ContextNamespace.LOGGER,
     );
   }
 
+  /**
+   * Retrieves the correlation ID from the logger context.
+   * @returns The correlation ID.
+   */
   public getCorrelationId(): string {
-    return this.localStorageLoggerService.getLoggerContextValue(
+    return this.localStorageService.getContextValue(
       'correlationId',
       ContextNamespace.LOGGER,
     ) as string;
   }
 
+  /**
+   * Sets additional log info data in the logger context.
+   * @param key The key of the data.
+   * @param value The value of the data.
+   */
   public setLogInfoData(key: string, value: unknown): void {
-    this.localStorageLoggerService.setLoggerContextValue(
+    this.localStorageService.setContextValue(
       key,
       value,
       ContextNamespace.LOGGER,
     );
   }
 
+  /**
+   * Retrieves additional log info data from the logger context.
+   * @returns The additional log info data object.
+   */
   public getLogInfoData(): object {
-    return this.localStorageLoggerService.getLoggerContextValue(
+    return this.localStorageService.getContextValue(
       'extraLogInfo',
       ContextNamespace.LOGGER,
     ) as object;
   }
 
-  public static addLoggerHidenField(fields: Array<string>): void {
+  /**
+   * Adds fields to the list of hidden fields in logs.
+   * @param fields The fields to add to the list of hidden fields.
+   */
+  public static addLoggerHiddenField(fields: Array<string>): void {
     fields = fields || [];
     LoggerConfigs.hiddenFields = LoggerConfigs.hiddenFields.concat(fields);
   }
 
-  public static setLoggerHidenField(fields: Array<string>): void {
+  /**
+   * Sets the list of hidden fields in logs.
+   * @param fields The fields to set as hidden in logs.
+   */
+  public setLoggerHiddenField(fields: string[]): void {
     fields = fields || [];
     LoggerConfigs.hiddenFields = fields;
   }
