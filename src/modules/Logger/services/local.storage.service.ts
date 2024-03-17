@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AsyncLocalStorage } from 'async_hooks';
 import { v4 as uuid } from 'uuid';
-import { ContextNamespace } from './enums/context-namespaces';
+import { ContextNamespace } from '../enums/context-namespaces';
 
 @Injectable()
 export class LocalStorageService {

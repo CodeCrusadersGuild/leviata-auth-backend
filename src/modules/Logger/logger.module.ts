@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { LocalStorageService } from './local.storage.service';
-import { LoggerContextService } from './logger.context.service';
+import { LocalStorageService } from './services/local.storage.service';
+import { LoggerContextService } from './services/logger.context.service';
 
 @Module({
   providers: [LocalStorageService, LoggerContextService],

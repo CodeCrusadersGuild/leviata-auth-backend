@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { LocalStorageService } from './local.storage.service';
-import { ContextNamespace } from './enums/context-namespaces';
-import { LoggerConfigs } from './config/logger-configs';
+import { ContextNamespace } from '../enums/context-namespaces';
+import { LoggerConfigs } from '../config/logger-configs';
 
 @Injectable()
 export class LoggerContextService {
