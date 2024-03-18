@@ -37,7 +37,7 @@ export class LoggerService {
 
   private async getTraceLog(
     method: OriginFunction,
-  ): Promise<{ [key: string]: unknown }> {
+  ): Promise<{ class: string }> {
     try {
       const callSite = await this.callerService.getCallerModule(method);
       if (callSite) {
