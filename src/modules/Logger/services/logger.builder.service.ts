@@ -8,7 +8,7 @@ import { LoggerConstants } from '../constants/logger-constants';
 import { LoggerConfigs } from '../config/logger-configs';
 
 @Injectable()
-export class LoggerBuilder {
+export class LoggerBuilderService {
   constructor(private readonly loggerContextService: LoggerContextService) {}
 
   /**
