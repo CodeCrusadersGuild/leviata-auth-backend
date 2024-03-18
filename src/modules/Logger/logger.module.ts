@@ -5,6 +5,7 @@ import { LoggerBuilderService } from './services/logger.builder.service';
 import { LoggerContextService } from './services/logger.context.service';
 import { StackTraceService } from './services/stack.trace.service';
 import { LoggerService } from './services/logger.service';
+import { RequestLoggingMiddleware } from './middlewares/request.logging.middleware';
 
 @Module({
   providers: [
@@ -14,7 +15,13 @@ import { LoggerService } from './services/logger.service';
     LoggerContextService,
     StackTraceService,
     LoggerService,
+    RequestLoggingMiddleware,
   ],
-  exports: [LoggerService],
+  exports: [
+    LoggerService,
+    RequestLoggingMiddleware,
+    LocalStorageService,
+    LoggerContextService,
+  ],
 })
 export class LoggerModule {}
