@@ -46,7 +46,7 @@ export class LoggerService {
         };
       }
     } catch (err) {
-      console.error('Error while getting caller module:', err);
+      this.error('Error while getting caller module:', err);
     }
     return {
       class: '',
