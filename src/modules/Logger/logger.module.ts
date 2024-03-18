@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { CallerService } from './services/caller.service';
 import { LocalStorageService } from './services/local.storage.service';
 import { LoggerBuilderService } from './services/logger.builder.service';
@@ -9,19 +9,23 @@ import { RequestLoggingMiddleware } from './middlewares/request.logging.middlewa
 
 @Module({
   providers: [
+    RequestLoggingMiddleware,
     CallerService,
     LocalStorageService,
     LoggerBuilderService,
     LoggerContextService,
     StackTraceService,
     LoggerService,
-    RequestLoggingMiddleware,
   ],
   exports: [
-    LoggerService,
     RequestLoggingMiddleware,
+    LoggerService,
     LocalStorageService,
     LoggerContextService,
   ],
 })
-export class LoggerModule {}
+export class LoggerModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RequestLoggingMiddleware).forRoutes('*');
+  }
+}
