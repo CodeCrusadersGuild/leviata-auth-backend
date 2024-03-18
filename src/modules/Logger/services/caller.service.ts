@@ -18,28 +18,10 @@ export class CallerService {
   async getCallerModule(
     method: OriginFunction,
     level?: number,
-  ): Promise<{ name: string; root: string; path: string }> {
+  ): Promise<CallSite> {
     const stack = await this.stackTraceService.getCallsites(level || 1, method);
     const caller = stack[stack.length - 1];
-    return this.resolveModuleInfo(caller);
-  }
-
-  /**
-   * Resolves module information for the provided call site.
-   * @param caller The call site for which module information is to be resolved.
-   * @returns A promise that resolves to an object containing the name, root, and path of the module.
-   */
-  private async resolveModuleInfo(
-    caller: CallSite,
-  ): Promise<{ name: string; root: string; path: string }> {
-    const callerPath = caller.getFileName();
-    const moduleName = await this.getModuleName(callerPath);
-    const moduleRoot = Path.dirname(callerPath);
-    return {
-      name: moduleName,
-      root: moduleRoot,
-      path: callerPath,
-    };
+    return caller;
   }
 
   /**
