@@ -15,6 +15,6 @@ import { LoggerService } from './services/logger.service';
     StackTraceService,
     LoggerService,
   ],
-  exports: [],
+  exports: [LoggerService],
 })
 export class LoggerModule {}
