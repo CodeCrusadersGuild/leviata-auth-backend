@@ -8,9 +8,6 @@ export class AppController {
   @Get()
   getHello(): string {
     const response = this.appService.getHello();
-    this.appService.callExternalAPI();
-    this.appService.processRequest('teste');
-    // this.appService.throwError();
     return response;
   }
 }

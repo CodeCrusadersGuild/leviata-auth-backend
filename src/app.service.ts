@@ -1,32 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { LoggerService } from './modules/Logger/logger.service';
-import { Log } from './modules/Logger/decorators/log.decorator';
+import { LoggerService } from './modules/Logger/services/logger.service';
 
 @Injectable()
 export class AppService {
   constructor(private readonly logger: LoggerService) {}
 
-  @Log()
   getHello(): string {
-    // Método simples sem parâmetros
+    this.logger.info('Olá caralho');
+    this.logger.info('Olá caralho 2');
     return 'Hello World!';
-  }
-
-  @Log()
-  callExternalAPI(): void {
-    // Método simulando chamada a uma API externa
-    console.log('Calling external API...');
-  }
-
-  @Log()
-  processRequest(data: any): void {
-    // Método que recebe parâmetros e realiza algum processamento
-    console.log('Processing request with data:', data);
-  }
-
-  @Log()
-  throwError(): void {
-    // Método que lança uma exceção
-    throw new Error('Erro Simulado');
   }
 }
