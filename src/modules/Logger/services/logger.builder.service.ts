@@ -15,6 +15,7 @@ export class LoggerBuilder {
    * Gets the appropriate logger based on the environment.
    * In the local environment, a logger with pretty printing is created.
    * In other environments (e.g., AWS), a default logger is created.
+   * @param custom A custom formatting function for log messages.
    * @returns An instance of the Winston logger.
    */
   getLogger(custom?: (info: any, opts?: any) => any): Logger {
@@ -26,6 +27,7 @@ export class LoggerBuilder {
   /**
    * Creates a logger instance suitable for local development.
    * Includes pretty printing for human-readable logs.
+   * @param custom A custom formatting function for log messages.
    * @returns An instance of the Winston logger for local development.
    */
   private createLocalWinstonLogger(
@@ -45,6 +47,7 @@ export class LoggerBuilder {
 
   /**
    * Creates a default logger instance suitable for production environments (e.g., AWS).
+   * @param custom A custom formatting function for log messages.
    * @returns An instance of the default Winston logger for production environments.
    */
   private createDefaultWinstonLogger(
@@ -64,6 +67,7 @@ export class LoggerBuilder {
   /**
    * Formats log messages using a custom formatting function if provided,
    * otherwise applies the default custom formatting logic.
+   * @param custom A custom formatting function for log messages.
    * @returns A formatted log message based on the provided custom function.
    */
   private customJsonFormat(custom: (info: any, opts?: any) => any): any {
@@ -71,50 +75,97 @@ export class LoggerBuilder {
     return format(custom || defaultCustom)();
   }
 
+  /**
+   * Creates a default custom formatting function for log messages.
+   * Applies various transformations to log messages, including case modifications,
+   * adding correlation IDs, extra data, and combining message items.
+   * @returns A custom formatting function for log messages.
+   */
   private defaultCustom(): (info: any, opts?: any) => any {
     return (info, opts) => {
-      if (opts.yell) {
-        info.message = info.message.toUpperCase();
-      } else if (opts.whisper) {
-        info.message = info.message.toLowerCase();
-      }
-
-      info.level = info.level.toUpperCase();
-      info.level = info.level.toUpperCase();
-      info.correlationId =
-        this.loggerContextService.getCorrelationId() || uuid();
-      const extraData = this.loggerContextService.getLogInfoData();
-      if (extraData) {
-        Object.keys(extraData).forEach(key => {
-          info[key] = extraData[key];
-        });
-      }
-
-      let text;
-      for (const item of info.message) {
-        if (!item) {
-          continue;
-        }
-        if (typeof item === 'string' || typeof item === 'number') {
-          text = `${!text ? item : `${text} ${item}`}`;
-        } else if (Array.isArray(item)) {
-          for (const arrayItem of item) {
-            text = this.loadInfoItems(arrayItem, info, text);
-          }
-        } else if (typeof item === 'object') {
-          text = this.loadInfoItems(item, info, text);
-        } else {
-          info['__data'] = item;
-        }
-      }
-      delete info.message;
-
-      info.message = text;
-
+      this.formatMessageCase(info, opts);
+      this.formatLogLevel(info);
+      this.formatCorrelationId(info);
+      this.addExtraData(info);
+      this.combineMessageItems(info);
       return info;
     };
   }
 
+  /**
+   * Modifies the case of log messages based on provided options.
+   * @param info The log message object.
+   * @param opts Options for customizing log message formatting.
+   */
+  private formatMessageCase(info: any, opts?: any): void {
+    if (!opts) return;
+    if (opts.yell) {
+      info.message = info.message.toUpperCase();
+    } else if (opts.whisper) {
+      info.message = info.message.toLowerCase();
+    }
+  }
+
+  /**
+   * Converts log level to uppercase.
+   * @param info The log message object.
+   */
+  private formatLogLevel(info: any): void {
+    info.level = info.level.toUpperCase();
+  }
+
+  /**
+   * Adds a correlation ID to the log message.
+   * @param info The log message object.
+   */
+  private formatCorrelationId(info: any): void {
+    info.correlationId = this.loggerContextService.getCorrelationId() || uuid();
+  }
+
+  /**
+   * Adds extra data to the log message based on the current context.
+   * @param info The log message object.
+   */
+  private addExtraData(info: any): void {
+    const extraData = this.loggerContextService.getLogInfoData();
+    if (extraData) {
+      Object.assign(info, extraData);
+    }
+  }
+
+  /**
+   * Combines message items into a single text message.
+   * @param info The log message object.
+   */
+  private combineMessageItems(info: any): void {
+    let text = '';
+    for (const item of info.message) {
+      if (!item) {
+        continue;
+      }
+      if (typeof item === 'string' || typeof item === 'number') {
+        text = `${!text ? item : `${text} ${item}`}`;
+      } else if (Array.isArray(item)) {
+        for (const arrayItem of item) {
+          text = this.loadInfoItems(arrayItem, info, text);
+        }
+      } else if (typeof item === 'object') {
+        text = this.loadInfoItems(item, info, text);
+      } else {
+        info['__data'] = item;
+      }
+    }
+    delete info.message;
+    info.message = text;
+  }
+
+  /**
+   * Processes individual items within log message arrays or objects.
+   * @param item A single item within the log message.
+   * @param info The log message object.
+   * @param text The current text representation of the log message.
+   * @returns The updated text representation of the log message.
+   */
   private loadInfoItems(
     item: Array<unknown>,
     info: { [key: string]: any },
@@ -122,21 +173,11 @@ export class LoggerBuilder {
   ): string {
     try {
       if (item instanceof TypeError || item instanceof Error) {
-        info['errorMessage'] = item.message;
-        info['stackError'] = item.stack;
+        this.handleTypeErrorOrError(item, info);
       } else if (typeof item === 'string') {
-        text = `${!text ? item : `${text} ${item}`}`;
+        text = this.handleStringItem(item, text);
       } else if (typeof item === 'object') {
-        Object.keys(item).forEach(key => {
-          if (
-            this.shouldHide(key) &&
-            !(process.env.SHOW_SENSETIVE_LOG == 'true')
-          ) {
-            info[key] = LoggerConstants.HidenLogFieldLabel;
-          } else {
-            info[key] = item[key];
-          }
-        });
+        this.handleObjectItem(item, info);
       }
     } catch (error) {
       console.log('ERROR', error);
@@ -144,6 +185,52 @@ export class LoggerBuilder {
     return text;
   }
 
+  /**
+   * Handles error messages by extracting error details.
+   * @param item The error object.
+   * @param info The log message object.
+   */
+  private handleTypeErrorOrError(
+    item: TypeError | Error,
+    info: { [key: string]: any },
+  ): void {
+    info['errorMessage'] = item.message;
+    info['stackError'] = item.stack;
+  }
+
+  /**
+   * Handles string items within log messages.
+   * @param item The string item.
+   * @param text The current text representation of the log message.
+   * @returns The updated text representation of the log message.
+   */
+  private handleStringItem(item: string, text: string): string {
+    return `${!text ? item : `${text} ${item}`}`;
+  }
+
+  /**
+   * Handles object items within log messages, adding them to the log message with optional hiding of sensitive fields.
+   * @param item The object item.
+   * @param info The log message object.
+   */
+  private handleObjectItem(
+    item: { [key: string]: any },
+    info: { [key: string]: any },
+  ): void {
+    Object.keys(item).forEach(key => {
+      if (this.shouldHide(key) && !(process.env.SHOW_SENSETIVE_LOG == 'true')) {
+        info[key] = LoggerConstants.HidenLogFieldLabel;
+      } else {
+        info[key] = item[key];
+      }
+    });
+  }
+
+  /**
+   * Determines if a log message field should be hidden based on configuration.
+   * @param key The field key.
+   * @returns A boolean indicating whether the field should be hidden.
+   */
   private shouldHide(key: string): boolean {
     key = key || '';
     key = key.toLocaleLowerCase();
