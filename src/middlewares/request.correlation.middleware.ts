@@ -6,7 +6,7 @@ import { LocalStorage } from 'src/shared/logger/services/LocalStorage';
 import { LoggerContext } from 'src/shared/logger/services/LoggerContext';
 
 @Injectable()
-export class RequestLoggingMiddleware implements NestMiddleware {
+export class RequestCorrelationMiddleware implements NestMiddleware {
   constructor() {}
 
   async use(req: Request, res: Response, next: NextFunction) {
