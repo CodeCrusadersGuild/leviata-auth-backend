@@ -2,7 +2,7 @@ import * as Path from 'path';
 import * as FileSystem from 'fs';
 import { CallSite } from 'callsites';
 import { StackTrace } from './StackTrace';
-import { OriginFunction } from '../types/origin.function.type';
+import { OriginFunction } from './types/origin.function.type';
 
 export class Caller {
   static async getCallerModule(

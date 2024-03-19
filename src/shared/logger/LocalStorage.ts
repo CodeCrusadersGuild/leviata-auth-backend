@@ -1,6 +1,6 @@
 import { AsyncLocalStorage } from 'async_hooks';
 import { v4 as uuid } from 'uuid';
-import { ContextNamespace } from '../enums/context-namespaces';
+import { ContextNamespace } from './enums/context-namespaces';
 
 export class LocalStorage {
   private static storage = new AsyncLocalStorage<

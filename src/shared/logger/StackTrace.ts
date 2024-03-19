@@ -1,5 +1,5 @@
 import { CallSite } from 'callsites';
-import { OriginFunction } from '../types/origin.function.type';
+import { OriginFunction } from './types/origin.function.type';
 
 export class StackTrace {
   private static originalLimit = Error.stackTraceLimit;

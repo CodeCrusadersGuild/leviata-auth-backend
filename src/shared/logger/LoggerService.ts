@@ -1,4 +1,4 @@
-import { OriginFunction } from '../types/origin.function.type';
+import { OriginFunction } from './types/origin.function.type';
 import { LoggerBuilder } from './LoggerBuilder';
 import { Caller } from './Caller';
 
