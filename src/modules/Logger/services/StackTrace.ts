@@ -1,16 +1,14 @@
-import { Injectable } from '@nestjs/common';
 import { CallSite } from 'callsites';
 import { TraceFunction } from '../types/trace.function.type';
 import { OriginFunction } from '../types/origin.function.type';
 
-@Injectable()
-export class StackTraceService {
-  private originalLimit: number;
-  private originalTrace: TraceFunction;
+export class StackTrace {
+  private static originalLimit: number;
+  private static originalTrace: TraceFunction;
 
-  constructor() {
-    this.originalLimit = Error.stackTraceLimit;
-    this.originalTrace = Error.prepareStackTrace;
+  static initialize(): void {
+    StackTrace.originalLimit = Error.stackTraceLimit;
+    StackTrace.originalTrace = Error.prepareStackTrace;
   }
 
   /**
@@ -19,19 +17,19 @@ export class StackTraceService {
    * @param origin The origin function for the stack trace. Defaults to the current function.
    * @returns A promise that resolves to an array of call sites.
    */
-  async getCallsites(
+  static async getCallsites(
     frames: number,
     origin?: OriginFunction,
   ): Promise<CallSite[]> {
-    origin = origin || this.getCallsites;
+    origin = origin || StackTrace.getCallsites;
     frames = Math.abs(Math.floor(frames)) || 1;
     origin = typeof origin === 'function' && origin;
 
-    this.configureStackTrace(frames, origin);
+    StackTrace.configureStackTrace(frames, origin);
 
-    const stack = await this.captureStackTrace(origin);
+    const stack = await StackTrace.captureStackTrace(origin);
 
-    this.restoreOriginalStackTrace();
+    StackTrace.restoreOriginalStackTrace();
 
     return stack;
   }
@@ -41,7 +39,10 @@ export class StackTraceService {
    * @param frames The number of frames.
    * @param origin The origin function for the stack trace.
    */
-  private configureStackTrace(frames: number, origin?: OriginFunction): void {
+  private static configureStackTrace(
+    frames: number,
+    origin?: OriginFunction,
+  ): void {
     Error.stackTraceLimit = origin ? frames : frames + 1;
     Error.prepareStackTrace = (_, stack) => stack;
   }
@@ -51,11 +52,11 @@ export class StackTraceService {
    * @param origin The origin function for the stack trace.
    * @returns A promise that resolves to an array of call sites.
    */
-  private async captureStackTrace(
+  private static async captureStackTrace(
     origin: OriginFunction | undefined,
   ): Promise<CallSite[]> {
     const error = new Error();
-    Error.captureStackTrace(error, origin || this.getCallsites);
+    Error.captureStackTrace(error, origin || StackTrace.getCallsites);
     const stack = origin ? error.stack : error.stack.slice(1);
     return stack as unknown as CallSite[];
   }
@@ -63,8 +64,8 @@ export class StackTraceService {
   /**
    * Restores the original stack trace limit and trace function.
    */
-  private restoreOriginalStackTrace(): void {
-    Error.stackTraceLimit = this.originalLimit;
-    Error.prepareStackTrace = this.originalTrace;
+  private static restoreOriginalStackTrace(): void {
+    Error.stackTraceLimit = StackTrace.originalLimit;
+    Error.prepareStackTrace = StackTrace.originalTrace;
   }
 }
