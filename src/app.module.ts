@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { RequestLoggingMiddleware } from './middlewares/request.logging.middleware';
+import { RequestCorrelationMiddleware } from './middlewares/request.correlation.middleware';
 
 @Module({
   imports: [],
@@ -11,7 +11,7 @@ import { RequestLoggingMiddleware } from './middlewares/request.logging.middlewa
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(RequestLoggingMiddleware)
+      .apply(RequestCorrelationMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }
