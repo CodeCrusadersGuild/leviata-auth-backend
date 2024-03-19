@@ -1,14 +1,9 @@
-import { Logger } from 'winston';
 import { OriginFunction } from '../types/origin.function.type';
 import { LoggerBuilder } from './LoggerBuilder';
 import { Caller } from './Caller';
 
 export class LoggerService {
-  private static logger: Logger;
-
-  static initialize(): void {
-    LoggerService.logger = LoggerBuilder.getLogger();
-  }
+  private static logger = LoggerBuilder.getLogger();
 
   static debug(...args: unknown[]): void {
     args.push(LoggerService.getTraceLog(LoggerService.debug));
