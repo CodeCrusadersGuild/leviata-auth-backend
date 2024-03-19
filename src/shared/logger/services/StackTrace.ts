@@ -1,15 +1,9 @@
 import { CallSite } from 'callsites';
-import { TraceFunction } from '../types/trace.function.type';
 import { OriginFunction } from '../types/origin.function.type';
 
 export class StackTrace {
-  private static originalLimit: number;
-  private static originalTrace: TraceFunction;
-
-  static initialize(): void {
-    StackTrace.originalLimit = Error.stackTraceLimit;
-    StackTrace.originalTrace = Error.prepareStackTrace;
-  }
+  private static originalLimit = Error.stackTraceLimit;
+  private static originalTrace = Error.prepareStackTrace;
 
   /**
    * Retrieves call sites from the stack trace.
