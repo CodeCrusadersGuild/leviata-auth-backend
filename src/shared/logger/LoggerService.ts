@@ -1,46 +1,40 @@
-import { OriginFunction } from './types/origin.function.type';
 import { LoggerBuilder } from './LoggerBuilder';
-import { Caller } from './Caller';
+import { CallContext } from './CallContext';
 
 export class LoggerService {
   private static logger = LoggerBuilder.getLogger();
 
   static debug(...args: unknown[]): void {
-    args.push(LoggerService.getTraceLog(LoggerService.debug));
+    args.push(LoggerService.getTraceLog());
     LoggerService.logger.debug(LoggerService.handleNull(args));
   }
 
   static error(...args: unknown[]): void {
-    args.push(LoggerService.getTraceLog(LoggerService.error));
+    args.push(LoggerService.getTraceLog());
     LoggerService.logger.error(LoggerService.handleNull(args));
   }
 
   static info(...args: unknown[]): void {
-    args.push(LoggerService.getTraceLog(LoggerService.info));
+    args.push(LoggerService.getTraceLog());
     LoggerService.logger.info(LoggerService.handleNull(args));
   }
 
   static warn(...args: unknown[]): void {
-    args.push(LoggerService.getTraceLog(LoggerService.warn));
+    args.push(LoggerService.getTraceLog());
     LoggerService.logger.warn(LoggerService.handleNull(args));
   }
 
-  private static async getTraceLog(
-    method: OriginFunction,
-  ): Promise<{ class: string }> {
+  private static getTraceLog(): { class: string } {
     try {
-      const callSite = await Caller.getCallerModule(method);
-      if (callSite) {
-        return {
-          class: `${callSite.getTypeName()}`,
-        };
-      }
+      const callerModuleInfo = CallContext.getCallerModuleInfo();
+      return {
+        class: callerModuleInfo.name,
+      };
     } catch (err) {
-      LoggerService.error('Error while getting caller module:', err);
+      return {
+        class: '',
+      };
     }
-    return {
-      class: '',
-    };
   }
 
   private static handleNull(args: unknown[]): unknown[] {
