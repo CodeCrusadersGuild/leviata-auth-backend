@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { CallerModuleInfo } from './CallerModuleInfo';
+import { CallerModuleInfo } from './types/caller.module.info.type';
 
 /**
  * Represents a utility class for retrieving caller module information.
@@ -28,11 +28,11 @@ export class CallContext {
     const callerDirname = path.dirname(callerFilePath);
 
     // Getting information about the caller module
-    const callerModuleInfo = new CallerModuleInfo(
-      path.basename(callerFilePath),
-      callerFilePath,
-      path.dirname(callerDirname),
-    );
+    const callerModuleInfo: CallerModuleInfo = {
+      name: path.basename(callerFilePath),
+      filePath: callerFilePath,
+      rootDir: path.dirname(callerDirname),
+    };
 
     // Restoring the original prepareStackTrace function
     Error.prepareStackTrace = originalPrepareStackTrace;
