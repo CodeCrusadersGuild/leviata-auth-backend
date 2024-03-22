@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { RequestCorrelationMiddleware } from './middlewares/request.correlation.middleware';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { RequestInterceptor } from './interceptors/request.interceptor';
+import { ResponseInterceptor } from './interceptors/response.interceptor';
 
 @Module({
   imports: [],
@@ -13,6 +14,10 @@ import { RequestInterceptor } from './interceptors/request.interceptor';
     {
       provide: APP_INTERCEPTOR,
       useClass: RequestInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ResponseInterceptor,
     },
   ],
 })
