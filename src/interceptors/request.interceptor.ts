@@ -48,7 +48,7 @@ export class RequestInterceptor implements NestInterceptor {
           data: response.data,
         };
 
-        LoggerService.debug('[RequestInterceptor] Response Data', responseLog);
+        LoggerService.debug('[ResponseInterceptor] Response Data', responseLog);
       }),
     );
   }
