@@ -7,12 +7,24 @@ import { LoggerConfigs } from './config/logger-configs';
 import { LoggerContext } from './LoggerContext';
 
 export class LoggerBuilder {
+  /**
+   * Retrieves an instance of the logger based on the environment.
+   * If the environment is local, a logger with customized formatting is returned.
+   * If the environment is not local, a default logger with JSON formatting is returned.
+   * @param custom A custom formatting function for the logger (optional).
+   * @returns An instance of the logger.
+   */
   static getLogger(custom?: (info: any, opts?: any) => any): Logger {
     return process.env.NODE_ENV === Environment.LOCAL
       ? this.createLocalWinstonLogger(custom)
       : this.createDefaultWinstonLogger(custom);
   }
 
+  /**
+   * Creates a logger instance with customized formatting for the local environment.
+   * @param custom A custom formatting function for the logger (optional).
+   * @returns An instance of the logger.
+   */
   private static createLocalWinstonLogger(
     custom: (info: any, opts?: any) => any = this.defaultCustom(),
   ): Logger {
@@ -28,6 +40,11 @@ export class LoggerBuilder {
     });
   }
 
+  /**
+   * Creates a default logger instance with JSON formatting.
+   * @param custom A custom formatting function for the logger (optional).
+   * @returns An instance of the logger.
+   */
   private static createDefaultWinstonLogger(
     custom: (info: any, opts?: any) => any = this.defaultCustom(),
   ): Logger {
@@ -42,11 +59,20 @@ export class LoggerBuilder {
     });
   }
 
+  /**
+   * Creates a custom JSON formatting for the logger.
+   * @param custom A custom formatting function for the logger.
+   * @returns Custom formatting for the logger.
+   */
   private static customJsonFormat(custom: (info: any, opts?: any) => any): any {
     const defaultCustom = this.defaultCustom();
     return format(custom || defaultCustom)();
   }
 
+  /**
+   * Returns the default custom formatting function for the logger.
+   * @returns Default custom formatting function for the logger.
+   */
   private static defaultCustom(): (info: any, opts?: any) => any {
     return (info, opts) => {
       this.formatMessageCase(info, opts);
@@ -58,6 +84,11 @@ export class LoggerBuilder {
     };
   }
 
+  /**
+   * Formats the message case based on the options provided.
+   * @param info The log message information.
+   * @param opts The formatting options.
+   */
   private static formatMessageCase(info: any, opts?: any): void {
     if (!opts) return;
     if (opts.yell) {
@@ -67,14 +98,26 @@ export class LoggerBuilder {
     }
   }
 
+  /**
+   * Formats the log level to uppercase.
+   * @param info The log message information.
+   */
   private static formatLogLevel(info: any): void {
     info.level = info.level.toUpperCase();
   }
 
+  /**
+   * Formats and adds a correlation ID to the log message information.
+   * @param info The log message information.
+   */
   private static formatCorrelationId(info: any): void {
     info.correlationId = LoggerContext.getCorrelationId() || uuid();
   }
 
+  /**
+   * Adds extra data to the log message information.
+   * @param info The log message information.
+   */
   private static addExtraData(info: any): void {
     const extraData = LoggerContext.getLogInfoData();
     if (extraData) {
@@ -82,6 +125,10 @@ export class LoggerBuilder {
     }
   }
 
+  /**
+   * Combines multiple items in the log message into a single string.
+   * @param info The log message information.
+   */
   private static combineMessageItems(info: any): void {
     let text = '';
     for (const item of info.message) {
@@ -104,6 +151,13 @@ export class LoggerBuilder {
     info.message = text;
   }
 
+  /**
+   * Loads items from the log message and formats them accordingly.
+   * @param item The item from the log message.
+   * @param info The log message information.
+   * @param text The current text content.
+   * @returns The updated text content.
+   */
   private static loadInfoItems(
     item: Array<unknown>,
     info: { [key: string]: any },
