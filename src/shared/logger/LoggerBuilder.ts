@@ -177,6 +177,11 @@ export class LoggerBuilder {
     return text;
   }
 
+  /**
+   * Handles TypeError or Error objects and adds them to the log message.
+   * @param item The TypeError or Error object.
+   * @param info The log message information.
+   */
   private static handleTypeErrorOrError(
     item: TypeError | Error,
     info: { [key: string]: any },
@@ -185,10 +190,21 @@ export class LoggerBuilder {
     info['stackError'] = item.stack;
   }
 
+  /**
+   * Handles string items and appends them to the existing text.
+   * @param item The string item to be handled.
+   * @param text The current text content.
+   * @returns The updated text content.
+   */
   private static handleStringItem(item: string, text: string): string {
     return `${!text ? item : `${text} ${item}`}`;
   }
 
+  /**
+   * Handles object items and adds them to the log message information.
+   * @param item The object item to be handled.
+   * @param info The log message information.
+   */
   private static handleObjectItem(
     item: { [key: string]: any },
     info: { [key: string]: any },
@@ -202,12 +218,22 @@ export class LoggerBuilder {
     });
   }
 
+  /**
+   * Determines whether a log field should be hidden based on configuration.
+   * @param key The key of the log field.
+   * @returns True if the log field should be hidden, false otherwise.
+   */
   private static shouldHide(key: string): boolean {
     key = key || '';
     key = key.toLocaleLowerCase();
     return LoggerConfigs.hiddenFields.includes(key);
   }
 
+  /**
+   * Retrieves the log level from environment variables.
+   * Defaults to 'debug' if not specified.
+   * @returns The log level.
+   */
   private static getLogLevel(): string {
     return process.env.LOG_LEVEL
       ? process.env.LOG_LEVEL.toLowerCase()
