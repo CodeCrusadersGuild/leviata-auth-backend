@@ -2,7 +2,7 @@ service: leviata-auth-backend
 
 provider:
   name: google
-  runtime: nodejs14
+  runtime: nodejs20
   region: us-central1 # Defina a região desejada
   project: leviata-auth-backend
 
