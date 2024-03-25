@@ -3,7 +3,7 @@ service: leviata-auth-backend
 provider:
   name: google
   runtime: nodejs14
-  region: us-central1 # Defina a região desejada
+  region: us-central1
   project: leviata-auth-backend
 
 plugins:
@@ -13,13 +13,14 @@ functions:
   app:
     handler: main
     events:
-      - http: path
+      - http:
+          path: /app # Caminho para o endpoint HTTP
+          method: GET # Método HTTP (opcional, padrão: GET)
     environment:
-      # GOOGLE_APPLICATION_CREDENTIALS: leviata-auth-backend-18e4f69f3724.json
-      # Outras variáveis de ambiente, se necessário
+      # Variáveis de ambiente, se necessário
 
 # Configurações específicas para o plugin de autenticação
 custom:
   auth:
     regions:
-      - us-central1 # ou qualquer região desejada
+      - us-central1
