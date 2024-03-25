@@ -4,6 +4,7 @@ provider:
   name: google
   runtime: nodejs14
   region: us-central1 # Defina a região desejada
+  project: leviata-auth-backend
 
 plugins:
   - serverless-google-cloudfunctions
