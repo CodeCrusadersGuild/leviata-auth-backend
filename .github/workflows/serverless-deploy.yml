@@ -33,4 +33,4 @@ jobs:
           credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
 
       - name: Deploy with Serverless
-        run: npx serverless deploy --stage ${{ github.event.inputs.environment }}
+        run: npx serverless deploy --stage ${{ github.event.inputs.environment }} --project ${{ secrets.GCP_PROJECT_ID }}
