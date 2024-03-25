@@ -1,22 +1,17 @@
 import { NestFactory } from '@nestjs/core';
+import { ExpressAdapter } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { readFileSync } from 'fs';
+import * as express from 'express';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+const expressApp = express();
 
-  const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
-  const version = packageJson.version;
+export const handler = async () => {
+  const adapter = new ExpressAdapter(expressApp);
+  const app = await NestFactory.create(AppModule, adapter);
 
-  const options = new DocumentBuilder()
-    .setTitle('API Documentation')
-    .setDescription('API Documentation')
-    .setVersion(version)
-    .build();
-  const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document);
+  await app.init();
 
-  await app.listen(3000);
-}
-bootstrap();
+  expressApp.listen(3000, () => {
+    console.log('Nest application is listening on port 3000.');
+  });
+};
