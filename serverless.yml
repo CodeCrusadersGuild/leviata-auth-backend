@@ -11,7 +11,7 @@ plugins:
 
 functions:
   app:
-    handler: app.handler
+    handler: main
     events:
       - http:
           path: app
