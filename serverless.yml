@@ -11,15 +11,12 @@ plugins:
 
 functions:
   app:
-    handler: main
+    handler: app.handler
     events:
       - http:
-          path: /app # Caminho para o endpoint HTTP
-          method: GET # Método HTTP (opcional, padrão: GET)
-    environment:
-      # Variáveis de ambiente, se necessário
+          path: app
+          method: get
 
-# Configurações específicas para o plugin de autenticação
 custom:
   auth:
     regions:
