@@ -1,5 +1,5 @@
 import { LocalStorage } from './LocalStorage';
-import { ContextNamespace } from './enums/context-namespaces';
+import { ContextNamespace } from '../../enums/context-namespaces';
 import { AsyncLocalStorage } from 'async_hooks';
 
 // Mocking AsyncLocalStorage for testing purposes

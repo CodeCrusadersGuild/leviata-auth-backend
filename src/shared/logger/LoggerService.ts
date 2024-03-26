@@ -1,5 +1,5 @@
-import { LoggerBuilder } from './LoggerBuilder';
-import { CallContext } from './CallContext';
+import { LoggerBuilder } from './logic/builder/LoggerBuilder';
+import { CallContext } from './logic/caller/CallContext';
 
 /**
  * Service class for logging messages with different log levels.

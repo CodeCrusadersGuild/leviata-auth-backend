@@ -1,7 +1,7 @@
 import { LoggerContext } from './LoggerContext';
-import { LocalStorage } from './LocalStorage';
-import { ContextNamespace } from './enums/context-namespaces';
-import { LoggerConfigs } from './config/logger-configs';
+import { LocalStorage } from '../storage/LocalStorage';
+import { ContextNamespace } from '../../enums/context-namespaces';
+import { LoggerConfigs } from '../../config/logger-configs';
 
 // Mocking LocalStorage for testing purposes
 jest.mock('./LocalStorage');

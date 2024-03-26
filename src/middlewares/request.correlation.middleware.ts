@@ -2,8 +2,8 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { v4 as uuid } from 'uuid';
 import { ContextNamespace } from 'src/shared/logger/enums/context-namespaces';
-import { LocalStorage } from 'src/shared/logger/LocalStorage';
-import { LoggerContext } from 'src/shared/logger/LoggerContext';
+import { LocalStorage } from 'src/shared/logger/logic/storage/LocalStorage';
+import { LoggerContext } from 'src/shared/logger/logic/context/LoggerContext';
 
 @Injectable()
 export class RequestCorrelationMiddleware implements NestMiddleware {

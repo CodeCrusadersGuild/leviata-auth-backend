@@ -1,10 +1,10 @@
 import { Logger } from 'winston';
 import { createLogger, transports, format } from 'winston';
 import { v4 as uuid } from 'uuid';
-import { Environment } from './enums/environment';
-import { LoggerConstants } from './constants/logger-constants';
-import { LoggerConfigs } from './config/logger-configs';
-import { LoggerContext } from './LoggerContext';
+import { Environment } from '../../enums/environment';
+import { LoggerConstants } from '../../constants/logger-constants';
+import { LoggerConfigs } from '../../config/logger-configs';
+import { LoggerContext } from '../context/LoggerContext';
 
 export class LoggerBuilder {
   /**

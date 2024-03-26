@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { CallerModuleInfo } from './types/caller.module.info.type';
+import { CallerModuleInfo } from '../../types/caller.module.info.type';
 
 /**
  * Represents a utility class for retrieving caller module information.
