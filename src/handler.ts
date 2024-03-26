@@ -14,7 +14,7 @@ async function bootstrapApp() {
   return cachedApp;
 }
 
-export async function nestFunction(req: Request, res: Response) {
+export async function handler(req: Request, res: Response) {
   const app = await bootstrapApp();
   // Aqui você pode manipular a solicitação HTTP
   await app.getHttpAdapter().getInstance().handle(req, res);
