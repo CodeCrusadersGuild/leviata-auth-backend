@@ -11,7 +11,7 @@ plugins:
 
 functions:
   app:
-    handler: dist/handler.handler
+    handler: handler
     events:
       - http: path
     environment:
