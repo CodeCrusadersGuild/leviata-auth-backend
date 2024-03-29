@@ -1,17 +1,7 @@
 import { LogLevel } from '../enums/log.level';
 import { LogActions } from '../enums/log.actions';
 import { LoggerService } from '../LoggerService';
-
-export interface LogTrace {
-  action: string;
-  method: string;
-  class: string;
-  function: string;
-  parameters?: any;
-  hasFailed?: boolean;
-  duration?: number;
-  errorMessage?: unknown;
-}
+import { LogTrace } from '../types/log.trace.type';
 
 export abstract class GenericLogDecorator {
   private static handleParameters(args: any[], parameters: any[]): any[] {
