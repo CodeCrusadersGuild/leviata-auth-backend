@@ -1,4 +1,4 @@
-# Ambiente de Pré-Produção (preprod)
+# Ambiente de Pré-produção (preprod)
 
 # Definição do provedor do Google Cloud Platform
 provider "google" {
@@ -25,4 +25,10 @@ resource "google_project_service" "cloud_storage_preprod" {
 resource "google_project_service" "cloud_logging_preprod" {
   project = var.project_id
   service = "logging.googleapis.com"
+}
+
+# Definindo um bucket do Cloud Storage para armazenamento do estado do Terraform
+resource "google_storage_bucket" "terraform_state_bucket" {
+  name     = "terraform-state-bucket-preprod"
+  location = var.bucket_location
 }

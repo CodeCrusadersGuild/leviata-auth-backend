@@ -26,3 +26,9 @@ resource "google_project_service" "cloud_logging_dev" {
   project = var.project_id
   service = "logging.googleapis.com"
 }
+
+# Definindo um bucket do Cloud Storage para armazenamento do estado do Terraform
+resource "google_storage_bucket" "terraform_state_bucket" {
+  name     = "terraform-state-bucket"
+  location = var.bucket_location
+}
