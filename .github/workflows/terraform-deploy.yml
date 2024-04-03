@@ -32,9 +32,9 @@ jobs:
         run: terraform plan -out=tfplan -var-file=terraform/${{ github.event.inputs.environment }}/variables.tfvars -var-file=terraform/${{ github.event.inputs.environment }}/main.tf
 
       # Aguarda a aprovação manual antes de prosseguir
-      - name: 'Wait for approval'
+      - name: Wait for approval
         if: github.event_name == 'workflow_dispatch'
-        uses: actions/ask-for-approval@v2
+        run: echo "Aprovação necessária. Clique no botão 'Run workflow' e em seguida 'Run workflow' novamente para confirmar."
 
       # Aplica as alterações apenas após a aprovação manual
       - name: Terraform Apply
