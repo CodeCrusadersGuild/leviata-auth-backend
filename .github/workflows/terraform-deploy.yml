@@ -21,9 +21,12 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Set up ADC for Terraform
-        run: echo "::set-env name=GOOGLE_APPLICATION_CREDENTIALS::/tmp/gcp_key.json"
+        run: echo ${{ secrets.GCP_APPLICATION_DEFAULT_CREDENTIALS }} > /tmp/gcp_key.json
         env:
           GCP_APPLICATION_DEFAULT_CREDENTIALS: ${{ secrets.GCP_APPLICATION_DEFAULT_CREDENTIALS }}
+
+      - name: Configure GOOGLE_APPLICATION_CREDENTIALS
+        run: export GOOGLE_APPLICATION_CREDENTIALS="/tmp/gcp_key.json"
 
       - name: Terraform Init
         run: terraform init
