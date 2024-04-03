@@ -1,2 +1,8 @@
 region = "us-central1"
 project_name = "app-leviata-api"
+cloud_functions_name = "my_cloud_functions"
+cloud_build_name = "my_cloud_build"
+cloud_storage_name = "my_cloud_storage"
+cloud_logging_name = "my_cloud_logging"
+bucket_location = "us-central1"
+bucket_name = "terraform-state-bucket"
