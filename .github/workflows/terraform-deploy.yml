@@ -39,3 +39,14 @@ jobs:
       # Aplica as alterações apenas após a aprovação manual
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
+
+      # Obter os outputs do Terraform
+      - name: Get Terraform Outputs
+        run: |
+          terraform output -json > terraform_output.json
+          echo "::set-env name=TF_OUTPUTS::$(cat terraform_output.json)"
+
+      # Salva o estado do Terraform no bucket do Google Cloud Storage
+      - name: Save Terraform state
+        run: |
+          terraform state push -lock=false gs://${{ env.TF_OUTPUTS.bucket_name }}/terraform.tfstate
