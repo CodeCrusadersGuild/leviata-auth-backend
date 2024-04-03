@@ -20,10 +20,10 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
 
-      - name: Authenticate with Google Cloud
-        uses: google-github-actions/auth@v1
-        with:
-          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+      - name: Set up ADC for Terraform
+        run: echo "::set-env name=GOOGLE_APPLICATION_CREDENTIALS::/tmp/gcp_key.json"
+        env:
+          GCP_APPLICATION_DEFAULT_CREDENTIALS: ${{ secrets.GCP_APPLICATION_DEFAULT_CREDENTIALS }}
 
       - name: Terraform Init
         run: terraform init
