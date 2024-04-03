@@ -29,7 +29,7 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan -var-file=terraform/${{ github.event.inputs.environment }}/variables.tfvars -var-file=terraform/${{ github.event.inputs.environment }}/main.tf
+        run: terraform plan -out=tfplan -var-file=terraform/variables.tfvars -var-file=terraform/${{ github.event.inputs.environment }}/main.tf
 
       # Aguarda a aprovação manual antes de prosseguir
       - name: Wait for approval
