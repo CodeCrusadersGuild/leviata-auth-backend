@@ -2,7 +2,7 @@
 
 # Definição do provedor do Google Cloud Platform
 provider "google" {
-  project = "${var.project_name}_dev"
+  project = var.project_id
   region  = var.region
 }
 
