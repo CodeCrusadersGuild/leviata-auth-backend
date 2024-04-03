@@ -32,3 +32,8 @@ resource "google_storage_bucket" "terraform_state_bucket" {
   name     = var.bucket_name
   location = var.bucket_location
 }
+
+# Definindo a saída para o nome do bucket
+output "bucket_name" {
+  value = google_storage_bucket.terraform_state_bucket.name
+}
