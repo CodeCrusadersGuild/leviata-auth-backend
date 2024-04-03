@@ -34,9 +34,7 @@ jobs:
       # Aguarda a aprovação manual antes de prosseguir
       - name: 'Wait for approval'
         if: github.event_name == 'workflow_dispatch'
-        uses: repo-sync/prompt@v2
-        with:
-          message: 'Approve Terraform changes?'
+        uses: actions/ask-for-approval@v2
 
       # Aplica as alterações apenas após a aprovação manual
       - name: Terraform Apply
