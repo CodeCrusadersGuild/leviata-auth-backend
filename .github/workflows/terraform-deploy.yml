@@ -3,9 +3,6 @@ name: Terraform Deploy
 on:
   workflow_dispatch:
     inputs:
-      branch:
-        description: 'Branch to deploy'
-        required: true
       environment:
         description: 'Environment to deploy'
         required: true
