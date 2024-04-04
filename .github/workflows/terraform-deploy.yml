@@ -22,7 +22,7 @@ jobs:
           terraform_version: 1.0.0
 
       - name: Initialize Terraform
-        run: terraform init ${GITHUB_WORKSPACE}/terraform/${{ inputs.environment }}
+        run: terraform init -chdir=${GITHUB_WORKSPACE}/terraform/${{ inputs.environment }}
 
       - name: Plan Terraform
         run: terraform plan ${GITHUB_WORKSPACE}/terraform/${{ inputs.environment }}
