@@ -1,9 +1,7 @@
 name: Terraform Deploy
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
+on:
+  workflow_dispatch:
     inputs:
       branch:
         description: 'Branch to deploy'
@@ -11,6 +9,9 @@ jobs:
       environment:
         description: 'Environment to deploy'
         required: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
