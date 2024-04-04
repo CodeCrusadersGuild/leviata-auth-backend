@@ -1,50 +1,33 @@
-name: Terraform Infrastructure Deploy
-
-on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment to deploy to'
-        required: true
-        default: 'dev' # Define o ambiente padrão como dev
+name: Terraform Deploy
 
 jobs:
   deploy:
-    name: Deploy Infrastructure
     runs-on: ubuntu-latest
 
+    inputs:
+      branch:
+        description: 'Branch to deploy'
+        required: true
+      environment:
+        description: 'Environment to deploy'
+        required: true
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          ref: ${{ inputs.branch }}
 
-      - name: Set up Terraform
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.0
 
-      - name: Set up ADC for Terraform
-        run: echo "${{ secrets.GCP_APPLICATION_DEFAULT_CREDENTIALS }}" > /tmp/gcp_key.json
+      - name: Initialize Terraform
+        run: terraform init ${GITHUB_WORKSPACE}/terraform/${{ inputs.environment }}
 
-      - name: Terraform Init
-        run: terraform init
+      - name: Plan Terraform
+        run: terraform plan ${GITHUB_WORKSPACE}/terraform/${{ inputs.environment }}
 
-      - name: Terraform Plan
-        run: terraform plan -out=tfplan -var-file=terraform/variables.tfvars -var-file=terraform/${{ github.event.inputs.environment }}/main.tf
-
-      # Aguarda a aprovação manual antes de prosseguir
-      - name: Wait for approval
-        if: github.event_name == 'workflow_dispatch'
-        run: echo "Aprovação necessária. Clique no botão 'Run workflow' e em seguida 'Run workflow' novamente para confirmar."
-
-      # Aplica as alterações apenas após a aprovação manual
-      - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
-
-      # Obter os outputs do Terraform
-      - name: Get Terraform Outputs
-        run: |
-          terraform output -json > terraform_output.json
-          echo "::set-env name=TF_OUTPUTS::$(cat terraform_output.json)"
-
-      # Salva o estado do Terraform no bucket do Google Cloud Storage
-      - name: Save Terraform state
-        run: |
-          terraform state push -lock=false gs://${{ env.TF_OUTPUTS.bucket_name }}/terraform.tfstate
+      - name: Apply Terraform
+        run: terraform apply -auto-approve ${GITHUB_WORKSPACE}/terraform/${{ inputs.environment }}
