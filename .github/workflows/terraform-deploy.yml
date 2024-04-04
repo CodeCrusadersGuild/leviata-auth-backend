@@ -27,7 +27,9 @@ jobs:
           terraform init
 
       - name: Plan Terraform
-        run: terraform plan ${GITHUB_WORKSPACE}/terraform/${{ inputs.environment }}
+        run: |
+          cd ${GITHUB_WORKSPACE}/terraform/${{ inputs.environment }}
+          terraform plan
 
       - name: Apply Terraform
         run: terraform apply -auto-approve ${GITHUB_WORKSPACE}/terraform/${{ inputs.environment }}
