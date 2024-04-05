@@ -19,13 +19,7 @@ jobs:
 
       - name: Configure Google Cloud credentials
         run: |
-          echo "GOOGLE_APPLICATION_CREDENTIALS=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" > /tmp/environment
-        shell: bash
-
-      - name: Load environment variables
-        run: |
-          source /tmp/environment
-        shell: bash
+          echo "export GOOGLE_APPLICATION_CREDENTIALS='${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}'" >> $GITHUB_ENV
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
