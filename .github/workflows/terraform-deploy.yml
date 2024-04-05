@@ -17,9 +17,9 @@ jobs:
         with:
           ref: ${{ inputs.branch }}
 
-      - name: Decode Google Cloud credentials
+      - name: Configure Google Cloud credentials
         run: |
-          echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" | base64 --decode > /tmp/credentials.json
+          echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" > /tmp/credentials.json
           echo "export GOOGLE_APPLICATION_CREDENTIALS='/tmp/credentials.json'" >> $GITHUB_ENV
 
       - name: Setup Terraform
