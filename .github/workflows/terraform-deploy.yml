@@ -16,10 +16,10 @@ jobs:
         with:
           ref: ${{ inputs.branch }}
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 1.0.0
+      - name: Configure Google Cloud credentials
+        run: echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" > /tmp/credentials.json
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/credentials.json
 
       - name: Initialize Terraform
         run: |
