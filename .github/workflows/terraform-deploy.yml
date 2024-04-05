@@ -19,12 +19,12 @@ jobs:
 
       - name: Configure Google Cloud credentials
         run: |
-          echo "GOOGLE_APPLICATION_CREDENTIALS=$(echo ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }} | base64 -d)" >> /tmp/environment
+          echo "GOOGLE_APPLICATION_CREDENTIALS=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" > /tmp/environment
         shell: bash
 
       - name: Load environment variables
         run: |
-          . /tmp/environment
+          source /tmp/environment
         shell: bash
 
       - name: Setup Terraform
