@@ -6,6 +6,7 @@ on:
       environment:
         description: 'Environment to deploy'
         required: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -17,13 +18,18 @@ jobs:
           ref: ${{ inputs.branch }}
 
       - name: Configure Google Cloud credentials
-        run: echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" > /tmp/credentials.json
-      - name: Write JSON credentials
-        run: echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' > /tmp/credentials.json
+        run: |
+          echo "Conteúdo de secrets.GOOGLE_APPLICATION_CREDENTIALS:"
+          echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}"
+          echo "Conteúdo do arquivo JSON de credenciais:"
+          cat /tmp/credentials.json
         env:
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/credentials.json
-      - name: Authenticate with Google Cloud
-        run: gcloud auth activate-service-account --key-file=/tmp/credentials.json
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.0
 
       - name: Initialize Terraform
         run: |
@@ -33,7 +39,7 @@ jobs:
       - name: Plan Terraform
         run: |
           cd ${GITHUB_WORKSPACE}/terraform/${{ inputs.environment }}
-          terraform plan -var-file=dev.tfvars
+          terraform plan
 
       - name: Apply Terraform
         run: terraform apply -auto-approve ${GITHUB_WORKSPACE}/terraform/${{ inputs.environment }}
