@@ -18,7 +18,14 @@ jobs:
           ref: ${{ inputs.branch }}
 
       - name: Configure Google Cloud credentials
-        run: echo "::set-env name=GOOGLE_APPLICATION_CREDENTIALS::${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}"
+        run: |
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$(echo ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }} | base64 -d)" >> /tmp/environment
+        shell: bash
+
+      - name: Load environment variables
+        run: |
+          . /tmp/environment
+        shell: bash
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
