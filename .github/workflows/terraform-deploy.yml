@@ -18,8 +18,10 @@ jobs:
 
       - name: Configure Google Cloud credentials
         run: echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" > /tmp/credentials.json
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: /tmp/credentials.json
+      - name: Write JSON credentials
+        run: echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' > /tmp/credentials.json
+      - name: Authenticate with Google Cloud
+        run: gcloud auth activate-service-account --key-file=/tmp/credentials.json
 
       - name: Initialize Terraform
         run: |
