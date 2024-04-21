@@ -4,7 +4,7 @@ provider:
   name: google
   runtime: nodejs20
   region: us-central1
-  project: leviata-api-dev
+  project: leviata-api-dev-421000
 
 plugins:
   - serverless-google-cloudfunctions
