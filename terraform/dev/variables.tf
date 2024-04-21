@@ -1,9 +1,5 @@
 variable "dev_project_id" {
+  description = "ID do projeto de desenvolvimento"
   type        = string
-  description = "ID do projeto dev"
-}
-
-variable "dev_project_name" {
-  type        = string
-  description = "Nome do projeto dev"
+  default     = "leviata-api-dev-421000"
 }
