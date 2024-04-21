@@ -23,6 +23,11 @@ resource "google_project_service" "cloud_build" {
   service = "cloudbuild.googleapis.com"
 }
 
+resource "google_project_service" "deployment_manager" {
+  project = var.dev_project_id
+  service = "deploymentmanager.googleapis.com"
+}
+
 resource "google_project_service" "cloud_logging" {
   project = var.dev_project_id
   service = "logging.googleapis.com"
