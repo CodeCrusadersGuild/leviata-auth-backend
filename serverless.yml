@@ -13,11 +13,7 @@ functions:
   app:
     handler: handler
     events:
-      - http:
-          path: '*'
-          method: any
-          allowUnauthenticated: true
-          cors: true
+      - http: ANY /{proxy+}
     environment:
       # Defina as variáveis de ambiente específicas para o ambiente de desenvolvimento, se necessário
 
