@@ -8,7 +8,7 @@ resource "google_project_service" "cloud_resource_manager" {
   service = "cloudresourcemanager.googleapis.com"
 }
 
-resource "google_storage_bucket" "leviata_api_terraform_state_dev" {
+resource "google_storage_bucket" "leviata_api_terraform_state_homolog" {
   name     = var.bucket_name
   location = "US"
 }
