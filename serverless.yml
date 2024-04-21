@@ -14,15 +14,10 @@ functions:
     handler: handler
     events:
       - http:
+          path: '*'
           method: any
-          path: /{any+}
-          cors: true
           allowUnauthenticated: true
-          iamPolicy:
-            bindings:
-              - role: roles/cloudfunctions.invoker
-                members:
-                  - 'allUsers'
+          cors: true
     environment:
       # Defina as variáveis de ambiente específicas para o ambiente de desenvolvimento, se necessário
 
