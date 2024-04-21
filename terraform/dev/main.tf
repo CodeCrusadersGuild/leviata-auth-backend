@@ -9,8 +9,8 @@ resource "google_project_service" "cloud_resource_manager" {
 }
 
 # Crie o bucket no Google Cloud Storage para armazenar os arquivos de estado do ambiente de desenvolvimento
-resource "google_storage_bucket" "terraform_state_dev" {
-  name     = "terraform-state-dev"
+resource "google_storage_bucket" "leviata_api_terraform_state_dev" {
+  name     = "leviata-api-terraform-state-dev"
   location = "US" # Defina a localização desejada para o bucket (por exemplo, "US" para os EUA)
 
   # Adicione outras configurações do bucket, se necessário
