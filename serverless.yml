@@ -16,7 +16,6 @@ functions:
       - http: ANY /{proxy+}
     environment:
       # Defina as variáveis de ambiente específicas para o ambiente de desenvolvimento, se necessário
-    role: roles/cloudfunctions.invoker
 
 # Configurações específicas para o plugin de autenticação
 custom:
