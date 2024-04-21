@@ -1,10 +1,10 @@
-service: leviata-auth-backend
+service: leviata-api
 
 provider:
   name: google
   runtime: nodejs20
-  region: us-central1 # Defina a região desejada
-  project: leviata-auth-backend
+  region: us-central1
+  project: leviata-api-dev
 
 plugins:
   - serverless-google-cloudfunctions
@@ -15,11 +15,10 @@ functions:
     events:
       - http: path
     environment:
-      # GOOGLE_APPLICATION_CREDENTIALS: leviata-auth-backend-18e4f69f3724.json
-      # Outras variáveis de ambiente, se necessário
+      # Defina as variáveis de ambiente específicas para o ambiente de desenvolvimento, se necessário
 
 # Configurações específicas para o plugin de autenticação
 custom:
   auth:
     regions:
-      - us-central1 # ou qualquer região desejada
+      - us-central1
