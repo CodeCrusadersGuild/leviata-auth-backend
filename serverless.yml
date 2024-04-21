@@ -14,6 +14,7 @@ functions:
     handler: handler
     events:
       - http: ANY /{proxy+}
+        allowUnauthenticated: true
     environment:
       # Defina as variáveis de ambiente específicas para o ambiente de desenvolvimento, se necessário
 
@@ -22,21 +23,3 @@ custom:
   auth:
     regions:
       - us-central1
-
-resources:
-  Resources:
-    AppIamPolicy:
-      Type: 'gcp-types/cloudfunctions-v1:projects.locations.functions.iamPolicy'
-      Properties:
-        location: us-central1
-        function: ${self:service}-${opt:stage}-app
-        policy:
-          {
-            'bindings':
-              [
-                {
-                  'members': ['allUsers'],
-                  'role': 'roles/cloudfunctions.invoker',
-                },
-              ],
-          }
