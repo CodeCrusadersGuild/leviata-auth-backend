@@ -16,15 +16,10 @@ functions:
       - http: ANY /{proxy+}
     environment:
       # Defina as variáveis de ambiente específicas para o ambiente de desenvolvimento, se necessário
+    allowPublic: true
 
 # Configurações específicas para o plugin de autenticação
 custom:
   auth:
     regions:
       - us-central1
-
-# Adicione a seção de permissões
-iam:
-  - cloudFunction: app
-    role: roles/cloudfunctions.invoker
-    member: allUsers
