@@ -4,7 +4,7 @@ provider:
   name: google
   runtime: nodejs20
   region: us-central1
-  project: leviata-api-dev-421000
+  project: ${self:custom.projectIds.${opt:stage, 'dev'}}
 
 plugins:
   - serverless-google-cloudfunctions
@@ -19,6 +19,11 @@ functions:
 
 # Configurações específicas para o plugin de autenticação
 custom:
+  projectIds:
+    dev: leviata-api-dev-421000
+    homolog: leviata-api-homolog
+    preprod: leviata-api-preprod
+    prod: leviata-api-prod
   auth:
     regions:
       - us-central1
