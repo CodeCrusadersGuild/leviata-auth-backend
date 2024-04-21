@@ -13,7 +13,10 @@ functions:
   app:
     handler: handler
     events:
-      - http: path
+      - http:
+          path: '*'
+          method: ANY
+          allowUnauthenticated: true
     environment:
       # Defina as variáveis de ambiente específicas para o ambiente de desenvolvimento, se necessário
 
