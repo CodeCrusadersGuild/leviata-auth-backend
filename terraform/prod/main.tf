@@ -1,30 +1,34 @@
 provider "google" {
   project = var.prod_project_id
   region  = "us-central1"
-  zone    = "us-central1-a"
 }
 
-resource "google_project" "leviata_api_project" {
-  name            = var.prod_project_name
-  project_id      = var.prod_project_id
+resource "google_project_service" "cloud_resource_manager" {
+  project = var.prod_project_id
+  service = "cloudresourcemanager.googleapis.com"
+}
+
+resource "google_storage_bucket" "leviata_api_terraform_state_prod" {
+  name     = var.bucket_name
+  location = "US"
 }
 
 resource "google_project_service" "cloud_functions" {
-  project = google_project.leviata_api_project.project_id
+  project = var.prod_project_id
   service = "cloudfunctions.googleapis.com"
 }
 
 resource "google_project_service" "cloud_build" {
-  project = google_project.leviata_api_project.project_id
+  project = var.prod_project_id
   service = "cloudbuild.googleapis.com"
 }
 
-resource "google_project_service" "cloud_storage" {
-  project = google_project.leviata_api_project.project_id
-  service = "storage.googleapis.com"
+resource "google_project_service" "deployment_manager" {
+  project = var.prod_project_id
+  service = "deploymentmanager.googleapis.com"
 }
 
 resource "google_project_service" "cloud_logging" {
-  project = google_project.leviata_api_project.project_id
+  project = var.prod_project_id
   service = "logging.googleapis.com"
 }

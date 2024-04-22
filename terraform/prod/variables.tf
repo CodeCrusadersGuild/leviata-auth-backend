@@ -1,9 +1,11 @@
 variable "prod_project_id" {
+  description = "ID do projeto de produção"
   type        = string
-  description = "ID do projeto prod"
+  default     = "leviata-api-prod"
 }
 
-variable "prod_project_name" {
+variable "bucket_name" {
+  description = "Nome do bucket do Google Cloud Storage para armazenar os arquivos de estado do Terraform"
   type        = string
-  description = "Nome do projeto prod"
+  default     = "leviata-api-terraform-state-prod"
 }
