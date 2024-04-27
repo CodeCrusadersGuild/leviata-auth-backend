@@ -9,3 +9,9 @@ variable "bucket_name" {
   type        = string
   default     = "leviata-api-terraform-state-dev"
 }
+
+variable "firebase_name" {
+  description = "O nome do projeto Firebase."
+  type        = string
+  default     = "leviata-firebase-dev"
+}
