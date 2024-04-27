@@ -3,6 +3,16 @@ provider "google" {
   region  = "us-central1"
 }
 
+module "firebase_project" {
+  source     = "terraform-google-modules/project-factory/google"
+  version    = "4.0.0"
+  project_id = var.dev_project_id
+
+  activate_apis = [
+    "auth.googleapis.com"
+  ]
+}
+
 resource "google_project_service" "cloud_resource_manager" {
   project = var.dev_project_id
   service = "cloudresourcemanager.googleapis.com"
