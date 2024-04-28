@@ -7,6 +7,9 @@ module "firebase_project" {
   source          = "terraform-google-modules/project-factory/google"
   version         = "4.0.0"
   project_id      = var.dev_project_id
+  name            = null
+  org_id          = null
+  billing_account = null
   activate_apis   = [
     "auth.googleapis.com"
   ]
